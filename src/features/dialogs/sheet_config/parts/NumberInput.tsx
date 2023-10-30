@@ -3,14 +3,14 @@ import React from "react";
 
 export default function NumberInput({
   value,
-  setFn,
+  onChange,
   defaultValue = 10,
   min = 1,
   max = 99,
   step = 1,
 }: {
   value: number;
-  setFn: (n: number) => void;
+  onChange: (n: number) => void;
   defaultValue?: number;
   min?: number;
   max?: number;
@@ -22,7 +22,7 @@ export default function NumberInput({
       type="number"
       defaultValue={value}
       onChange={(event) =>
-        setFn(parseInt(event.target.value || defaultValue.toString()))
+        onChange(parseInt(event.target.value || defaultValue.toString()))
       }
       slotProps={{
         input: {

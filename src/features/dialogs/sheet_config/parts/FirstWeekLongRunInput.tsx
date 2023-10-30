@@ -1,17 +1,17 @@
-import useMegaStore from "../../../store/MegaStore.ts";
 import NumberInput from "./NumberInput.tsx";
+import useSheetConfigStore from "@store/SheetConfigStore.ts";
 
 export default function FirstWeekLongRunInput() {
-  const firstWeekLongRunMin = useMegaStore(
+  const firstWeekLongRunMin = useSheetConfigStore(
     (state) => state.firstWeekLongRunMin,
   );
-  const setFirstWeekLongRunMin = useMegaStore(
+  const setFirstWeekLongRunMin = useSheetConfigStore(
     (state) => state.setFirstWeekLongRunMin,
   );
   return (
     <NumberInput
       value={firstWeekLongRunMin}
-      setFn={setFirstWeekLongRunMin}
+      onChange={setFirstWeekLongRunMin}
       defaultValue={10}
       step={1}
       min={1}

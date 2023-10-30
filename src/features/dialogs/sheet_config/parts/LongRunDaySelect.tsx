@@ -1,9 +1,9 @@
 import { Option, Select } from "@mui/joy";
 import React from "react";
-import useMegaStore from "../../../store/MegaStore.ts";
+import useSheetConfigStore from "@store/SheetConfigStore.ts";
 
 export default function LongRunDaySelect() {
-  const [daysOfWeek, setDaysOfWeek] = useMegaStore((state) => [
+  const [daysOfWeek, setDaysOfWeek] = useSheetConfigStore((state) => [
     state.daysOfWeek,
     state.setDaysOfWeek,
   ]);
