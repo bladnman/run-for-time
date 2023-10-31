@@ -1,20 +1,24 @@
 import React from "react";
-import { Box, BoxProps } from "@mui/material";
+import { Stack, StackProps } from "@mui/joy";
 
-type HStackProps = BoxProps & {
-  sx?: BoxProps["sx"];
-  gap?: number;
-};
-
-const VStack: React.FC<HStackProps> = ({ children, sx, gap, ...rest }) => {
-  const finalSx = {
-    gap: gap ?? 0,
-    ...sx,
-  };
+interface VStackProps extends StackProps {
+  children: React.ReactNode;
+  justifyContent?: StackProps["justifyContent"];
+}
+const VStack: React.FC<VStackProps> = ({
+  children,
+  justifyContent,
+  ...rest
+}: VStackProps) => {
   return (
-    <Box display="flex" flexDirection="column" {...rest} sx={finalSx}>
+    <Stack
+      direction="column"
+      justifyContent={justifyContent ?? "space-between"}
+      alignItems="center"
+      {...rest}
+    >
       {children}
-    </Box>
+    </Stack>
   );
 };
 

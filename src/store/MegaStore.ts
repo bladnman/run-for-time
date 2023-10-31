@@ -11,7 +11,7 @@ const useMegaStore = create<MegaStore>()(
     (setState) =>
       ({
         appName: "Run for Time",
-        isSheetConfigDialogOpen: true,
+        isSheetConfigDialogOpen: false,
         setIsSheetConfigDialogOpen: (isOpen: boolean) =>
           setState({ isSheetConfigDialogOpen: isOpen }),
       }) as MegaStore,
