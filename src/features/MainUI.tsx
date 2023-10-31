@@ -5,7 +5,7 @@ import { Box } from "@mui/joy";
 
 export default function MainUI() {
   return (
-    <Box width={"100vw"}>
+    <Box>
       <MainBody />
 
       <SnackShop />
