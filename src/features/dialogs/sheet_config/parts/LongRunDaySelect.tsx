@@ -31,7 +31,11 @@ export default function LongRunDaySelect() {
       onChange={handleChange}
     >
       {daysOfWeek.map((day) => {
-        return <Option value={day}>{day}</Option>;
+        return (
+          <Option value={day} key={day}>
+            {day}
+          </Option>
+        );
       })}
     </Select>
   );

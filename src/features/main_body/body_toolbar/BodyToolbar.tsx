@@ -1,20 +1,23 @@
 import HStack from "@components/HStack.tsx";
-import { Button } from "@mui/joy";
+import { IconButton } from "@mui/joy";
 import useMegaStore from "@store/MegaStore.ts";
+import OurIcon from "@mui/icons-material/Settings";
 
 export default function BodyToolbar() {
   const setIsSheetConfigDialogOpen = useMegaStore(
     (state) => state.setIsSheetConfigDialogOpen,
   );
   return (
-    <HStack>
-      <Button
+    <HStack className={"no-print"}>
+      <IconButton
+        variant={"solid"}
+        color={"neutral"}
         onClick={() => {
           setIsSheetConfigDialogOpen(true);
         }}
       >
-        Configure
-      </Button>
+        <OurIcon />
+      </IconButton>
     </HStack>
   );
 }

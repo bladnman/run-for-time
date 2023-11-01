@@ -15,12 +15,15 @@ export interface SheetConfigStore {
   firstWeekLongRunMin: number;
   numberOfWeeks: number;
   increasePerWeekMin: number;
+  showWeekNumber: boolean;
 
   // UPDATERS
   setDaysOfWeek: (daysOfWeek: string[]) => void;
   setFirstWeekLongRunMin: (min: number) => void;
   setNumberOfWeeks: (weeks: number) => void;
   setIncreasePerWeekMin: (min: number) => void;
+  setShowWeekNumber: (show: boolean) => void;
+  setUsername: (username: string) => void;
 }
 
 const useSheetConfigStore = create<SheetConfigStore>()(
@@ -29,9 +32,10 @@ const useSheetConfigStore = create<SheetConfigStore>()(
       ({
         username: randomName(),
         daysOfWeek: [...DAY_NAMES_FOR_THE_WEEK],
-        firstWeekLongRunMin: 15,
-        numberOfWeeks: 12,
+        firstWeekLongRunMin: 20,
+        numberOfWeeks: 15,
         increasePerWeekMin: 5,
+        showWeekNumber: true,
 
         // UPDATERS
         setDaysOfWeek: (daysOfWeek: string[]) =>
@@ -41,6 +45,9 @@ const useSheetConfigStore = create<SheetConfigStore>()(
         setNumberOfWeeks: (weeks: number) => setState({ numberOfWeeks: weeks }),
         setIncreasePerWeekMin: (min: number) =>
           setState({ increasePerWeekMin: min }),
+        setShowWeekNumber: (show: boolean) =>
+          setState({ showWeekNumber: show }),
+        setUsername: (username: string) => setState({ username: username }),
       }) as SheetConfigStore,
   ),
 );

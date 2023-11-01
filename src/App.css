@@ -51,3 +51,10 @@
 /*    outline: 0px solid #fff;*/
 /*    outlineOffset: 1px;*/
 /*}*/
+
+
+@media print {
+    .no-print {
+        display: none !important;
+    }
+}

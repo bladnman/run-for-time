@@ -17,6 +17,8 @@ import LongRunDaySelect from "./parts/LongRunDaySelect.tsx";
 import FirstWeekLongRunInput from "./parts/FirstWeekLongRunInput.tsx";
 import NumberOfWeeksSelect from "./parts/NumberOfWeeksSelect.tsx";
 import IncreasePerWeekInput from "./parts/IncreasePerWeekInput.tsx";
+import IncludeWeekNumbersToggle from "@features/dialogs/sheet_config/parts/IncludeWeekNumbersToggle.tsx";
+import UserNameField from "@features/dialogs/sheet_config/parts/UserNameField.tsx";
 
 export default function SheetConfigDialog() {
   const [isOpen, setIsOpen] = useMegaStore((state) => [
@@ -39,6 +41,7 @@ export default function SheetConfigDialog() {
             sx={{ paddingX: 4, paddingY: 4 }}
           >
             <VStack gap={2}>
+              <SheetFormRow label="Name" inputComponent={<UserNameField />} />
               <SheetFormRow
                 label="Long run day"
                 inputComponent={<LongRunDaySelect />}
@@ -54,6 +57,10 @@ export default function SheetConfigDialog() {
               <SheetFormRow
                 label="Number of weeks"
                 inputComponent={<NumberOfWeeksSelect />}
+              />
+              <SheetFormRow
+                label="Include week numbers"
+                inputComponent={<IncludeWeekNumbersToggle />}
               />
             </VStack>
           </Sheet>
@@ -71,19 +78,21 @@ export default function SheetConfigDialog() {
 function SheetFormRow({
   label,
   inputComponent,
+  sx,
 }: {
   label: string;
   inputComponent: React.ReactNode;
+  sx?: any;
 }) {
   return (
-    <HStack gap={1}>
+    <HStack gap={1} sx={sx}>
       <Box sx={{ width: 150, textAlign: "right" }}>
         <Typography>{label}</Typography>
       </Box>
 
       <Box sx={{ width: 20 }}></Box>
 
-      <Box sx={{ width: 150, textAlign: "left" }}>{inputComponent}</Box>
+      <Box sx={{ minWidth: 250, textAlign: "left" }}>{inputComponent}</Box>
     </HStack>
   );
 }

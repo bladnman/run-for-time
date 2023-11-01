@@ -1,20 +1,57 @@
+import useSheetConfigStore from "@store/SheetConfigStore.ts";
+import padLeft from "@utils/padLeft.ts";
+
 export default function useTableData() {
-  const rows = [
-    createData("Frozen yoghurt", 159, 6.0, 24, 4.0),
-    createData("Ice cream sandwich", 237, 9.0, 37, 4.3),
-    createData("Eclair", 262, 16.0, 24, 6.0),
-    createData("Cupcake", 305, 3.7, 67, 4.3),
-    createData("Gingerbread", 356, 16.0, 49, 3.9),
-  ];
+  const numberOfWeeks = useSheetConfigStore((state) => state.numberOfWeeks);
+  const increasePerWeekMin = useSheetConfigStore(
+    (state) => state.increasePerWeekMin,
+  );
+  const firstWeekLongRunMin = useSheetConfigStore(
+    (state) => state.firstWeekLongRunMin,
+  );
+
+  const rows = [];
+  for (let i = 0; i < numberOfWeeks; i++) {
+    const increase = i * increasePerWeekMin;
+    const longRun = firstWeekLongRunMin + increase;
+    const weekData = getDataFor(i + 1, longRun);
+    rows.push(weekData);
+  }
+
   return rows;
 }
-
-function createData(
-  name: string,
-  calories: number,
-  fat: number,
-  carbs: number,
-  protein: number,
-) {
-  return { name, calories, fat, carbs, protein };
+function getDataFor(weekNumber: number, weekLongRunMin: number) {
+  return {
+    weekLabel: `WEEK ${padLeft(weekNumber, 2)}`,
+    days: [
+      {
+        duration: 0,
+        count: 0,
+      },
+      {
+        duration: Math.max(1, Math.round(weekLongRunMin / 2.5)),
+        count: 2,
+      },
+      {
+        duration: 0,
+        count: 0,
+      },
+      {
+        duration: Math.max(1, Math.round(weekLongRunMin / 2.7)),
+        count: 3,
+      },
+      {
+        duration: Math.max(1, Math.round(weekLongRunMin / 2.0)),
+        count: 2,
+      },
+      {
+        duration: 0,
+        count: 0,
+      },
+      {
+        duration: weekLongRunMin,
+        count: 1,
+      },
+    ],
+  };
 }
