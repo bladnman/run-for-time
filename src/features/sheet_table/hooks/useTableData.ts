@@ -23,6 +23,7 @@ export default function useTableData() {
 function getDataFor(weekNumber: number, weekLongRunMin: number) {
   return {
     weekLabel: `WEEK ${padLeft(weekNumber, 2)}`,
+    weekNumber: weekNumber,
     days: [
       {
         duration: 0,

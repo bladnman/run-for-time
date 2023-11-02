@@ -1,5 +1,5 @@
 import { create } from "zustand";
-import { devtools } from "zustand/middleware";
+import { devtools, persist, createJSONStorage } from "zustand/middleware";
 import { DAY_NAMES_FOR_THE_WEEK } from "@CONST";
 import randomName from "@utils/randomName.ts";
 export interface SheetConfigStore {
@@ -16,6 +16,7 @@ export interface SheetConfigStore {
   numberOfWeeks: number;
   increasePerWeekMin: number;
   showWeekNumber: boolean;
+  dayStatusList: { [key: string]: number };
 
   // UPDATERS
   setDaysOfWeek: (daysOfWeek: string[]) => void;
@@ -24,31 +25,70 @@ export interface SheetConfigStore {
   setIncreasePerWeekMin: (min: number) => void;
   setShowWeekNumber: (show: boolean) => void;
   setUsername: (username: string) => void;
+  setDayStatus: (weekNumber: number, dayNumber: number, value: number) => void;
+  getDayStatus: (
+    weekNumber: number,
+    dayNumber: number,
+    defaultValue: number,
+  ) => number;
+  clearDayStatus: () => void;
 }
 
 const useSheetConfigStore = create<SheetConfigStore>()(
   devtools(
-    (setState) =>
-      ({
-        username: randomName(),
-        daysOfWeek: [...DAY_NAMES_FOR_THE_WEEK],
-        firstWeekLongRunMin: 20,
-        numberOfWeeks: 15,
-        increasePerWeekMin: 5,
-        showWeekNumber: true,
+    persist(
+      (setState, getState) =>
+        ({
+          username: randomName(),
+          daysOfWeek: [...DAY_NAMES_FOR_THE_WEEK],
+          firstWeekLongRunMin: 20,
+          numberOfWeeks: 15,
+          increasePerWeekMin: 5,
+          showWeekNumber: true,
+          dayStatusList: {},
 
-        // UPDATERS
-        setDaysOfWeek: (daysOfWeek: string[]) =>
-          setState({ daysOfWeek: daysOfWeek }),
-        setFirstWeekLongRunMin: (min: number) =>
-          setState({ firstWeekLongRunMin: min }),
-        setNumberOfWeeks: (weeks: number) => setState({ numberOfWeeks: weeks }),
-        setIncreasePerWeekMin: (min: number) =>
-          setState({ increasePerWeekMin: min }),
-        setShowWeekNumber: (show: boolean) =>
-          setState({ showWeekNumber: show }),
-        setUsername: (username: string) => setState({ username: username }),
-      }) as SheetConfigStore,
+          // UPDATERS
+          setDaysOfWeek: (daysOfWeek: string[]) =>
+            setState({ daysOfWeek: daysOfWeek }),
+          setFirstWeekLongRunMin: (min: number) =>
+            setState({ firstWeekLongRunMin: min }),
+          setNumberOfWeeks: (weeks: number) =>
+            setState({ numberOfWeeks: weeks }),
+          setIncreasePerWeekMin: (min: number) =>
+            setState({ increasePerWeekMin: min }),
+          setShowWeekNumber: (show: boolean) =>
+            setState({ showWeekNumber: show }),
+          setUsername: (username: string) => setState({ username: username }),
+          setDayStatus: (
+            weekNumber: number,
+            dayNumber: number,
+            value: number,
+          ) => {
+            const key = `${weekNumber}-${dayNumber}`;
+            const dayStatusList = { ...getState().dayStatusList };
+            if (value === 0) {
+              delete dayStatusList[key];
+            } else {
+              dayStatusList[key] = value;
+            }
+            setState({ dayStatusList: dayStatusList });
+          },
+          getDayStatus: (
+            weekNumber: number,
+            dayNumber: number,
+            defaultValue: number = 0,
+          ) => {
+            const key = `${weekNumber}-${dayNumber}`;
+            const dayStatusList = { ...getState().dayStatusList };
+            return dayStatusList[key] ?? defaultValue;
+          },
+          clearDayStatus: () => setState({ dayStatusList: {} }),
+        }) as SheetConfigStore,
+      {
+        name: "sheet-config", // name of the item in the storage (must be unique)
+        storage: createJSONStorage(() => sessionStorage), // (optional) by default, 'localStorage' is used
+      },
+    ),
   ),
 );
 
