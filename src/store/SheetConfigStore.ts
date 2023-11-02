@@ -27,6 +27,7 @@ export interface SheetConfigStore {
   setShowWeekNumber: (show: boolean) => void;
   setUsername: (username: string) => void;
   setDayStatus: (weekNumber: number, dayNumber: number, value: number) => void;
+  setDayStatusToNextValue: (weekNumber: number, dayNumber: number) => void;
   getDayStatus: (
     weekNumber: number,
     dayNumber: number,
@@ -74,6 +75,28 @@ const useSheetConfigStore = create<SheetConfigStore>()(
             } else {
               dayStatusList[key] = value;
             }
+            setState({ dayStatusList: dayStatusList });
+          },
+          setDayStatusToNextValue: (weekNumber: number, dayNumber: number) => {
+            const key = `${weekNumber}-${dayNumber}`;
+            const dayStatusList = { ...getState().dayStatusList };
+            const dayStatus = dayStatusList[key] ?? 0;
+            let newValue = dayStatus;
+            switch (dayStatus) {
+              case 0:
+                newValue = 1;
+                break;
+              case 1:
+                newValue = 2;
+                break;
+              case 2:
+                newValue = 3;
+                break;
+              case 3:
+                newValue = 0;
+                break;
+            }
+            dayStatusList[key] = newValue;
             setState({ dayStatusList: dayStatusList });
           },
           getDayStatus: (

@@ -5,6 +5,7 @@ import VStack from "@components/VStack.tsx";
 import dayNameAbrv from "@utils/dayNameAbrv.ts";
 import useDayStatus from "@/hooks/useDayStatus.ts";
 import useBreakSize from "@/hooks/useBreakSize.ts";
+import useIconClassName from "@features/sheet_table/hooks/useIconClassName.ts";
 
 export default function SheetTable() {
   const tableData = useTableData();
@@ -101,10 +102,11 @@ function DataCellIcon({
   dayNumber: number;
 }) {
   const dayStatus = useDayStatus(weekNumber, dayNumber);
-  const setDayStatus = useSheetConfigStore((state) => state.setDayStatus);
+  const setDayStatusToNextValue = useSheetConfigStore(
+    (state) => state.setDayStatusToNextValue,
+  );
   const handleClick = () => {
-    console.log({ weekNumber, dayNumber });
-    setDayStatus(weekNumber, dayNumber, dayStatus ? 0 : 1);
+    setDayStatusToNextValue(weekNumber, dayNumber);
   };
   return count < 1 ? (
     <IconDot dayStatus={dayStatus} onClick={handleClick} />
@@ -139,27 +141,24 @@ function IconDot({ dayStatus, iconSize = "1em", onClick }: IconProps) {
         flexShrink: 0,
         width: iconSize,
         height: iconSize,
-        // backgroundColor: dayStatus ? "#5da8e4" : "lightgray",
-        // borderColor: dayStatus ? "#2196f3" : "transparent",
         backgroundColor: dayStatus ? "#19b13d" : "lightgray",
         borderRadius: "50%",
       }}
     />
   );
 }
-function IconCircle({ dayStatus, iconSize = "1.5em", onClick }: IconProps) {
+function IconCircle({ dayStatus, iconSize = "1.75em", onClick }: IconProps) {
+  let className = useIconClassName(dayStatus, true);
   return (
     <Box
       onClick={onClick}
+      className={className}
       sx={{
         flexShrink: 0,
         width: iconSize,
         height: iconSize,
         borderRadius: "50%",
-        // backgroundColor: dayStatus ? "#5da8e4" : "white",
-        // borderColor: dayStatus ? "#2196f3" : "lightgray",
-        backgroundColor: dayStatus ? "#19b13d" : "white",
-        borderColor: dayStatus ? "transparent" : "lightgray",
+        borderColor: "#e5e5e5",
         borderWidth: 3,
         borderStyle: "solid",
       }}

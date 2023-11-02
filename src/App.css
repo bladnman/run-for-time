@@ -5,7 +5,21 @@
 /*    text-align: center;*/
 }
 
-
+.icon-state-white {
+    background: #fff;
+}
+.icon-state-gray {
+    background: #e0e0e0;
+}
+.icon-state-success {
+    background: #19b13d;
+}
+.icon-state-partial {
+    background: linear-gradient(90deg, #19b13d 50%, #e34e53 50%) no-repeat;
+}
+.icon-state-failure {
+    background: #e34e53;
+}
 
 @media print {
     .no-print {
