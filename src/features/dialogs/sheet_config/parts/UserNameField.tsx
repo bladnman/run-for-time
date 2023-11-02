@@ -57,7 +57,7 @@ export default function UserNameField({
       onChange={(event) => setUsername(event.target.value)}
       onKeyDown={handleKeyDown}
       onBlur={handleBlur}
-      sx={{ minWidth: "15em", ...sx }}
+      sx={{ ...sx }}
       slotProps={{
         input: {
           ref: fieldRef,

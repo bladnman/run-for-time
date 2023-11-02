@@ -1,5 +1,4 @@
 import {
-  Box,
   Button,
   DialogActions,
   DialogContent,
@@ -7,11 +6,10 @@ import {
   Modal,
   ModalDialog,
   Sheet,
+  Table,
   Typography,
 } from "@mui/joy";
 import React, { useRef } from "react";
-import HStack from "@components/HStack.tsx";
-import VStack from "@components/VStack.tsx";
 import useMegaStore from "@store/MegaStore.ts";
 import LongRunDaySelect from "./parts/LongRunDaySelect.tsx";
 import FirstWeekLongRunInput from "./parts/FirstWeekLongRunInput.tsx";
@@ -19,6 +17,7 @@ import NumberOfWeeksSelect from "./parts/NumberOfWeeksSelect.tsx";
 import IncreasePerWeekInput from "./parts/IncreasePerWeekInput.tsx";
 import IncludeWeekNumbersToggle from "@features/dialogs/sheet_config/parts/IncludeWeekNumbersToggle.tsx";
 import UserNameField from "@features/dialogs/sheet_config/parts/UserNameField.tsx";
+import useBreakSize from "@/hooks/useBreakSize.ts";
 
 export default function SheetConfigDialog() {
   const [isOpen, setIsOpen] = useMegaStore((state) => [
@@ -30,9 +29,38 @@ export default function SheetConfigDialog() {
     setIsOpen(false);
   }).current;
 
+  const tableData = [
+    {
+      label: "Name",
+      component: <UserNameField />,
+    },
+    {
+      label: "Long run day",
+      component: <LongRunDaySelect />,
+    },
+    {
+      label: "First week long run minutes",
+      component: <FirstWeekLongRunInput />,
+    },
+    {
+      label: "Increase per week minutes",
+      component: <IncreasePerWeekInput />,
+    },
+    {
+      label: "Number of weeks",
+      component: <NumberOfWeeksSelect />,
+    },
+    {
+      label: "Include week numbers",
+      component: <IncludeWeekNumbersToggle />,
+    },
+  ];
+
+  const { isLtSm } = useBreakSize();
+
   return (
     <Modal onClose={handleClose} open={isOpen}>
-      <ModalDialog>
+      <ModalDialog layout={isLtSm ? "fullscreen" : "center"} minWidth={"600px"}>
         <DialogTitle>Sheet Config</DialogTitle>
         <DialogContent>
           <Sheet
@@ -40,29 +68,17 @@ export default function SheetConfigDialog() {
             variant="outlined"
             sx={{ paddingX: 4, paddingY: 4 }}
           >
-            <VStack gap={2}>
-              <SheetFormRow label="Name" inputComponent={<UserNameField />} />
-              <SheetFormRow
-                label="Long run day"
-                inputComponent={<LongRunDaySelect />}
-              />
-              <SheetFormRow
-                label="First week long run minutes"
-                inputComponent={<FirstWeekLongRunInput />}
-              />
-              <SheetFormRow
-                label="Increase per week minutes"
-                inputComponent={<IncreasePerWeekInput />}
-              />
-              <SheetFormRow
-                label="Number of weeks"
-                inputComponent={<NumberOfWeeksSelect />}
-              />
-              <SheetFormRow
-                label="Include week numbers"
-                inputComponent={<IncludeWeekNumbersToggle />}
-              />
-            </VStack>
+            <Table borderAxis="none">
+              <tbody>
+                {tableData.map((row, idx) => (
+                  <SettingTableRow
+                    key={idx}
+                    label={row.label}
+                    component={row.component}
+                  />
+                ))}
+              </tbody>
+            </Table>
           </Sheet>
         </DialogContent>
 
@@ -75,24 +91,39 @@ export default function SheetConfigDialog() {
     </Modal>
   );
 }
-function SheetFormRow({
+function SettingTableRow({
   label,
-  inputComponent,
-  sx,
+  component,
 }: {
   label: string;
-  inputComponent: React.ReactNode;
-  sx?: any;
+  component: React.ReactNode;
 }) {
+  const { isLtSm } = useBreakSize();
+
+  if (isLtSm) {
+    return (
+      <>
+        <tr>
+          <td>
+            <Typography>{label}</Typography>
+          </td>
+        </tr>
+        <tr>
+          <td>
+            <Typography sx={{ marginBottom: "2em" }}>{component}</Typography>
+          </td>
+        </tr>
+      </>
+    );
+  }
   return (
-    <HStack gap={1} sx={sx}>
-      <Box sx={{ width: 150, textAlign: "right" }}>
+    <tr>
+      <td>
         <Typography>{label}</Typography>
-      </Box>
-
-      <Box sx={{ width: 20 }}></Box>
-
-      <Box sx={{ minWidth: 250, textAlign: "left" }}>{inputComponent}</Box>
-    </HStack>
+      </td>
+      <td>
+        <Typography>{component}</Typography>
+      </td>
+    </tr>
   );
 }

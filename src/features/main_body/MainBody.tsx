@@ -1,11 +1,11 @@
 import VStack from "@components/VStack.tsx";
 import BodyToolbar from "@features/main_body/body_toolbar/BodyToolbar.tsx";
 import SheetTable from "@features/sheet_table/SheetTable.tsx";
-import { Sheet, Typography } from "@mui/joy";
-import HStack from "@components/HStack.tsx";
+import { Box, Card, CardActions, CardContent, Typography } from "@mui/joy";
 import useSheetConfigStore from "@store/SheetConfigStore.ts";
 import UserNameField from "@features/dialogs/sheet_config/parts/UserNameField.tsx";
 import React from "react";
+import useBreakSize from "@/hooks/useBreakSize.ts";
 
 export default function MainBody() {
   const username = useSheetConfigStore((state) => state.username);
@@ -30,15 +30,37 @@ export default function MainBody() {
       </Typography>
     );
   };
+  const { isLtSm } = useBreakSize();
+  const style = !isLtSm ? {} : { border: "none", boxShadow: "none" };
   return (
     <VStack>
-      <Sheet sx={{ padding: 3, borderRadius: 20 }}>
-        <HStack>
-          {renderName()}
+      <Card
+        style={style}
+        sx={{
+          padding: isLtSm ? 0 : 0,
+          borderRadius: 20,
+          maxWidth: "800px",
+          boxShadow: isLtSm ? "" : "lg",
+        }}
+      >
+        <CardContent>
+          <Box sx={{ paddingTop: "1em", paddingLeft: "1em" }}>
+            {renderName()}
+          </Box>
+          <SheetTable />
+        </CardContent>
+        <CardActions
+          className={"no-print"}
+          sx={{
+            paddingX: "2em",
+            paddingY: "0.5em",
+            display: "flex",
+            justifyContent: "flex-end",
+          }}
+        >
           <BodyToolbar />
-        </HStack>
-        <SheetTable />
-      </Sheet>
+        </CardActions>
+      </Card>
     </VStack>
   );
 }

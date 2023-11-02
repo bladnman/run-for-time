@@ -6,7 +6,7 @@ import MainUI from "./features/MainUI.tsx";
 
 function App() {
   return (
-    <CssVarsProvider theme={theme}>
+    <CssVarsProvider theme={theme} defaultMode="light">
       <MainUI />
     </CssVarsProvider>
   );

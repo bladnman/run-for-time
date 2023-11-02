@@ -1,14 +1,16 @@
 import useTableData from "@features/sheet_table/hooks/useTableData.ts";
-import { Box, colors, Table, Typography } from "@mui/joy";
+import { Box, Table, Typography } from "@mui/joy";
 import useSheetConfigStore from "@store/SheetConfigStore.ts";
 import VStack from "@components/VStack.tsx";
 import dayNameAbrv from "@utils/dayNameAbrv.ts";
 import useDayStatus from "@/hooks/useDayStatus.ts";
+import useBreakSize from "@/hooks/useBreakSize.ts";
 
 export default function SheetTable() {
   const tableData = useTableData();
   const daysOfWeek = useSheetConfigStore((state) => state.daysOfWeek);
   const showWeekNumber = useSheetConfigStore((state) => state.showWeekNumber);
+  const { isLtSm } = useBreakSize();
 
   return (
     <Table
@@ -19,7 +21,15 @@ export default function SheetTable() {
     >
       <thead>
         <tr>
-          {showWeekNumber && <th></th>}
+          {showWeekNumber && (
+            <th>
+              <Typography
+                sx={{ fontFamily: "Lalezar", textTransform: "uppercase" }}
+              >
+                {isLtSm ? "WK" : ""}
+              </Typography>
+            </th>
+          )}
           {daysOfWeek.map((day) => (
             <th key={day}>
               <Typography
@@ -33,13 +43,13 @@ export default function SheetTable() {
       </thead>
       <tbody>
         {tableData.map((row) => (
-          <tr key={row.weekLabel}>
+          <tr key={row.weekNumberText}>
             {showWeekNumber && (
               <td>
                 <Typography
                   sx={{ fontFamily: "Lalezar", textTransform: "uppercase" }}
                 >
-                  {row.weekLabel}
+                  {isLtSm ? "" : "WEEK"} {row.weekNumberText}
                 </Typography>
               </td>
             )}
@@ -50,7 +60,7 @@ export default function SheetTable() {
                 count={day.count}
                 weekNumber={row.weekNumber}
                 dayNumber={idx + 1}
-                key={`${row.weekLabel}-${idx}`}
+                key={`${row.weekNumberText}-${idx}`}
               />
             ))}
           </tr>
@@ -111,7 +121,7 @@ function DataCellIterationLabel({
 }) {
   if (count < 1) return null;
   return (
-    <Typography sx={{ fontSize: 10, fontStyle: "italic" }}>
+    <Typography noWrap={true} sx={{ fontSize: 10, fontStyle: "italic" }}>
       {count} x {duration}
     </Typography>
   );

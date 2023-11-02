@@ -1,8 +1,9 @@
 import HStack from "@components/HStack.tsx";
-import { IconButton, Typography } from "@mui/joy";
+import { Box, IconButton, Typography } from "@mui/joy";
 import useMegaStore from "@store/MegaStore.ts";
 import SettingsIcon from "@mui/icons-material/Settings";
 import DeleteIcon from "@mui/icons-material/Delete";
+import HelpIcon from "@mui/icons-material/Info";
 import VStack from "@components/VStack.tsx";
 import useSheetConfigStore from "@store/SheetConfigStore.ts";
 
@@ -12,9 +13,19 @@ export default function BodyToolbar() {
   const setIsSheetConfigDialogOpen = useMegaStore(
     (state) => state.setIsSheetConfigDialogOpen,
   );
+  const setIsIntroDialogOpen = useMegaStore(
+    (state) => state.setIsIntroDialogOpen,
+  );
   const hasMarks = Object.keys(dayStatusList).length > 0;
   return (
-    <HStack className={"no-print"} spacing={2}>
+    <HStack className={"no-print"} spacing={2} sx={{ width: "100%" }}>
+      <ToolbarIconButton
+        TheIcon={HelpIcon}
+        label={"Info"}
+        onClick={() => setIsIntroDialogOpen(true)}
+        color={"neutral"}
+      />
+      <Box sx={{ flexGrow: 1 }} />
       {hasMarks && (
         <ToolbarIconButton
           TheIcon={DeleteIcon}
@@ -40,7 +51,7 @@ function ToolbarIconButton({
   onClick,
   color = "neutral",
 }: {
-  TheIcon: SvgIcon;
+  TheIcon: any;
   label: string;
   onClick: () => void;
   color: "primary" | "secondary" | "neutral";

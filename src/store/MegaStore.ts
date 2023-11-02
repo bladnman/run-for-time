@@ -3,7 +3,9 @@ import { devtools } from "zustand/middleware";
 export interface MegaStore {
   appName: string;
   isSheetConfigDialogOpen: boolean;
+  isIntroDialogOpen: boolean;
   setIsSheetConfigDialogOpen: (isOpen: boolean) => void;
+  setIsIntroDialogOpen: (isOpen: boolean) => void;
 }
 
 const useMegaStore = create<MegaStore>()(
@@ -12,8 +14,12 @@ const useMegaStore = create<MegaStore>()(
       ({
         appName: "Run for Time",
         isSheetConfigDialogOpen: false,
+        isIntroDialogOpen: false,
+
         setIsSheetConfigDialogOpen: (isOpen: boolean) =>
           setState({ isSheetConfigDialogOpen: isOpen }),
+        setIsIntroDialogOpen: (isOpen: boolean) =>
+          setState({ isIntroDialogOpen: isOpen }),
       }) as MegaStore,
   ),
 );

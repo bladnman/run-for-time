@@ -2,6 +2,7 @@ import HStack from "@components/HStack.tsx";
 import { Box, Typography } from "@mui/joy";
 import padLeft from "@utils/padLeft.ts";
 import React from "react";
+import useBreakSize from "@/hooks/useBreakSize.ts";
 
 export default function SheetRow({
   weekNumber,
@@ -54,10 +55,11 @@ function WeekLabel({
   minWidth?: number;
   width?: number;
 }) {
+  const { isLtMd } = useBreakSize();
   return (
     <SheetRowCell minWidth={minWidth} width={width}>
       <Typography sx={{ fontFamily: "Lalezar" }}>
-        WEEK {padLeft(weekNumber)}
+        {isLtMd ? "W" : "WEEK"} {padLeft(weekNumber)}
       </Typography>
     </SheetRowCell>
   );

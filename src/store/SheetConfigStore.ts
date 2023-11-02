@@ -17,6 +17,7 @@ export interface SheetConfigStore {
   increasePerWeekMin: number;
   showWeekNumber: boolean;
   dayStatusList: { [key: string]: number };
+  hasSeenIntro: boolean;
 
   // UPDATERS
   setDaysOfWeek: (daysOfWeek: string[]) => void;
@@ -32,6 +33,7 @@ export interface SheetConfigStore {
     defaultValue: number,
   ) => number;
   clearDayStatus: () => void;
+  setHasSeenIntro: (hasSeenIntro: boolean) => void;
 }
 
 const useSheetConfigStore = create<SheetConfigStore>()(
@@ -41,11 +43,12 @@ const useSheetConfigStore = create<SheetConfigStore>()(
         ({
           username: randomName(),
           daysOfWeek: [...DAY_NAMES_FOR_THE_WEEK],
-          firstWeekLongRunMin: 20,
-          numberOfWeeks: 15,
+          firstWeekLongRunMin: 10,
+          numberOfWeeks: 8,
           increasePerWeekMin: 5,
           showWeekNumber: true,
           dayStatusList: {},
+          hasSeenIntro: false,
 
           // UPDATERS
           setDaysOfWeek: (daysOfWeek: string[]) =>
@@ -83,6 +86,8 @@ const useSheetConfigStore = create<SheetConfigStore>()(
             return dayStatusList[key] ?? defaultValue;
           },
           clearDayStatus: () => setState({ dayStatusList: {} }),
+          setHasSeenIntro: (hasSeenIntro: boolean) =>
+            setState({ hasSeenIntro: hasSeenIntro }),
         }) as SheetConfigStore,
       {
         name: "sheet-config", // name of the item in the storage (must be unique)
