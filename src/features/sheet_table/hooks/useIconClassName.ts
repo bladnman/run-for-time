@@ -8,6 +8,8 @@ export default function useIconClassName(dayStatus = 0, isCircleIcon = false) {
       return "icon-state-partial";
     case 3:
       return "icon-state-failure";
+    case 4:
+      return "icon-state-skip";
     default:
       return offClassName;
   }

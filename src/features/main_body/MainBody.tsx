@@ -10,11 +10,19 @@ import useBreakSize from "@/hooks/useBreakSize.ts";
 export default function MainBody() {
   const username = useSheetConfigStore((state) => state.username);
   const [isEditingName, setIsEditingName] = React.useState(false);
+  const { isLtSm } = useBreakSize();
   const renderName = () => {
+    let fontSize = isLtSm ? "2.5em" : "3em";
+    if (isLtSm && isEditingName) {
+      fontSize = "1.5em";
+    }
     if (isEditingName) {
       return (
         <UserNameField
-          sx={{ fontFamily: "Irish Grover", fontSize: "3em" }}
+          sx={{
+            fontFamily: "Irish Grover",
+            fontSize: fontSize,
+          }}
           onEscape={() => setIsEditingName(false)}
           onEnter={() => setIsEditingName(false)}
           onBlur={() => setIsEditingName(false)}
@@ -23,14 +31,13 @@ export default function MainBody() {
     }
     return (
       <Typography
-        sx={{ fontFamily: "Irish Grover", fontSize: "3em" }}
+        sx={{ fontFamily: "Irish Grover", fontSize: fontSize }}
         onClick={() => setIsEditingName(true)}
       >
         {username}
       </Typography>
     );
   };
-  const { isLtSm } = useBreakSize();
   const style = !isLtSm ? {} : { border: "none", boxShadow: "none" };
   return (
     <VStack>

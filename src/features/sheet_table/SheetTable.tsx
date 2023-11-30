@@ -134,20 +134,27 @@ type IconProps = {
   iconSize?: string;
 };
 function IconDot({ dayStatus, iconSize = "1em", onClick }: IconProps) {
+  /**
+   * WE USE CLASSES TO COLOR THE CIRCLES
+   */
+  let className = useIconClassName(dayStatus, false);
   return (
     <Box
       onClick={onClick}
+      className={className}
       sx={{
         flexShrink: 0,
         width: iconSize,
         height: iconSize,
-        backgroundColor: dayStatus ? "#19b13d" : "lightgray",
         borderRadius: "50%",
       }}
     />
   );
 }
 function IconCircle({ dayStatus, iconSize = "1.75em", onClick }: IconProps) {
+  /**
+   * WE USE CLASSES TO COLOR THE CIRCLES
+   */
   let className = useIconClassName(dayStatus, true);
   return (
     <Box

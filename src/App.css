@@ -20,9 +20,26 @@
 .icon-state-failure {
     background: #e34e53;
 }
+.icon-state-skip {
+    background: #ffbb4d;
+    position: relative; /* Needed for absolute positioning of the ::after element */
+}
+
+.icon-state-skip::after {
+    content: '×'; /* Unicode character for 'X' */
+    color: red; /* Color of the 'X' */
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) rotate(3deg); /* Centers the 'X' */
+    font-size: 60px; /* Adjust as needed */
+    font-family: "Irish Grover";
+}
 
 @media print {
     .no-print {
         display: none !important;
     }
 }
+
+/* gotcha */

@@ -1,5 +1,5 @@
 import { create } from "zustand";
-import { devtools, persist, createJSONStorage } from "zustand/middleware";
+import { devtools, persist } from "zustand/middleware";
 import { DAY_NAMES_FOR_THE_WEEK } from "@CONST";
 import randomName from "@utils/randomName.ts";
 export interface SheetConfigStore {
@@ -93,6 +93,9 @@ const useSheetConfigStore = create<SheetConfigStore>()(
                 newValue = 3;
                 break;
               case 3:
+                newValue = 4;
+                break;
+              case 4:
                 newValue = 0;
                 break;
             }
@@ -114,7 +117,7 @@ const useSheetConfigStore = create<SheetConfigStore>()(
         }) as SheetConfigStore,
       {
         name: "sheet-config", // name of the item in the storage (must be unique)
-        storage: createJSONStorage(() => sessionStorage), // (optional) by default, 'localStorage' is used
+        // storage: createJSONStorage(() => sessionStorage), // (optional) by default, 'localStorage' is used
       },
     ),
   ),

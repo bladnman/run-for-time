@@ -6,6 +6,7 @@ import DeleteIcon from "@mui/icons-material/Delete";
 import HelpIcon from "@mui/icons-material/Info";
 import VStack from "@components/VStack.tsx";
 import useSheetConfigStore from "@store/SheetConfigStore.ts";
+import { useConfirm } from "material-ui-confirm";
 
 export default function BodyToolbar() {
   const clearDayStatus = useSheetConfigStore((state) => state.clearDayStatus);
@@ -16,6 +17,16 @@ export default function BodyToolbar() {
   const setIsIntroDialogOpen = useMegaStore(
     (state) => state.setIsIntroDialogOpen,
   );
+  const confirm = useConfirm();
+
+  const handleClear = () => {
+    confirm({ description: "Are you sure you want to clear?" })
+      .then(() => {
+        clearDayStatus();
+      })
+      .catch(() => {});
+  };
+
   const hasMarks = Object.keys(dayStatusList).length > 0;
   return (
     <HStack className={"no-print"} spacing={2} sx={{ width: "100%" }}>
@@ -30,7 +41,7 @@ export default function BodyToolbar() {
         <ToolbarIconButton
           TheIcon={DeleteIcon}
           label={"Clear"}
-          onClick={clearDayStatus}
+          onClick={handleClear}
           color={"secondary"}
         />
       )}
