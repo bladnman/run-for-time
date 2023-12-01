@@ -18,6 +18,7 @@ import IncreasePerWeekInput from "./parts/IncreasePerWeekInput.tsx";
 import IncludeWeekNumbersToggle from "@features/dialogs/sheet_config/parts/IncludeWeekNumbersToggle.tsx";
 import UserNameField from "@features/dialogs/sheet_config/parts/UserNameField.tsx";
 import useBreakSize from "@/hooks/useBreakSize.ts";
+import WeeksPerPeriodInput from "@features/dialogs/sheet_config/parts/WeeksPerPeriodInput.tsx";
 
 export default function SheetConfigDialog() {
   const [isOpen, setIsOpen] = useMegaStore((state) => [
@@ -43,8 +44,12 @@ export default function SheetConfigDialog() {
       component: <FirstWeekLongRunInput />,
     },
     {
-      label: "Increase per week minutes",
+      label: "Increase per period minutes",
       component: <IncreasePerWeekInput />,
+    },
+    {
+      label: "Weeks per period",
+      component: <WeeksPerPeriodInput />,
     },
     {
       label: "Number of weeks",

@@ -3,6 +3,7 @@ import padLeft from "@utils/padLeft.ts";
 
 export default function useTableData() {
   const numberOfWeeks = useSheetConfigStore((state) => state.numberOfWeeks);
+  const weeksPerPeriod = useSheetConfigStore((state) => state.weeksPerPeriod);
   const increasePerWeekMin = useSheetConfigStore(
     (state) => state.increasePerWeekMin,
   );
@@ -11,8 +12,14 @@ export default function useTableData() {
   );
 
   const rows = [];
+  let increase = 0;
   for (let i = 0; i < numberOfWeeks; i++) {
-    const increase = i * increasePerWeekMin;
+    // not on the first week, and
+    // when the "period" is reached
+    // increase the long run by the "increasePerWeekMin"
+    if (i > 0 && i % weeksPerPeriod === 0) {
+      increase += increasePerWeekMin;
+    }
     const longRun = firstWeekLongRunMin + increase;
     const weekData = getDataFor(i + 1, longRun);
     rows.push(weekData);
